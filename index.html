@@ -1,0 +1,540 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Badminton Host</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Segoe UI,sans-serif;
+        }
+
+        body {
+            background: linear-gradient(to bottom,#1e3a8a,#2563eb);
+            color: white;
+            min-height: 100vh;
+        }
+
+        .container {
+            padding: 20px;
+        }
+
+        .full-width {
+            grid-column: 1 / -1;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .logo {
+            font-size: 38px;
+            font-weight: 700;
+        }
+
+        .sub {
+            color: #94a3b8;
+            margin-top: 5px;
+        }
+
+        .card {
+            background: #1e293b;
+            border: 1px solid #24345d;
+            border-radius: 22px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .title {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        input, select {
+            width: 100%;
+            background: #1e3a5f;
+            border: 1px solid #24345d;
+            color: white;
+            padding: 14px;
+            border-radius: 14px;
+            font-size: 16px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #cbd5e1;
+        }
+
+        .btn {
+            margin-top: 20px;
+            width: 100%;
+            border: none;
+            border-radius: 14px;
+            padding: 16px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .btn-green {
+            background: #7bd389;
+            color: black;
+        }
+
+        .btn-red {
+            background: #ff4d4d;
+            color: white;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+            .table th, .table td {
+                padding: 14px;
+                border-bottom: 1px solid #24345d;
+                text-align: left;
+            }
+
+        .nav {
+            position: fixed;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 95%;
+            background: #111b35;
+            border: 1px solid #24345d;
+            border-radius: 30px;
+            display: flex;
+            justify-content: space-around;
+            padding: 10px;
+        }
+
+            .nav button {
+                background: none;
+                border: none;
+                color: white;
+                padding: 12px 20px;
+                border-radius: 20px;
+                cursor: pointer;
+            }
+
+        .active {
+            background: #2d3b66 !important;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .small {
+            color: #94a3b8;
+            margin-top: 10px;
+        }
+
+        @media(max-width:900px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <div class="header">
+            <div>
+                <div class="logo">🏸 Badminton Host</div>
+                <div class="sub">
+                </div>
+            </div>
+        </div>
+
+        <!-- GHI SET -->
+        <div id="page-set">
+
+            <div class="card">
+                <div class="title">Ghi set mới</div>
+
+                <div class="full-width">
+                        <label>Ngày</label>
+                        <input type="date" id="date">
+                </div>
+
+                    <div>
+                        <label>Đội A - Người 1</label>
+                        <select id="a1"></select>
+                    </div>
+
+                    <div>
+                        <label>Đội A - Người 2</label>
+                        <select id="a2"></select>
+                    </div>
+
+                    <div>
+                        <label>Đội B - Người 1</label>
+                        <select id="b1"></select>
+                    </div>
+
+                    <div>
+                        <label>Đội B - Người 2</label>
+                        <select id="b2"></select>
+                    </div>
+
+                </div>
+
+                <button class="btn btn-green" onclick="saveSet()">
+                    Lưu set
+                </button>
+
+            </div>
+
+        </div>
+
+        <!-- NGƯỜI CHƠI -->
+        <div id="page-player" class="hidden">
+
+            <div class="card">
+                <div class="title">Người chơi</div>
+
+                <label>Tên người chơi</label>
+                <input type="text" id="playerName" placeholder="Tên người chơi">
+
+                <button class="btn btn-green" onclick="addPlayer()">
+                    Thêm
+                </button>
+
+                <br><br>
+
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Tên</th>
+                            <th>Xóa</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="playerTable"></tbody>
+                </table>
+
+            </div>
+
+        </div>
+
+        <!-- LỊCH SỬ -->
+        <div id="page-history" class="hidden">
+
+            <div class="card">
+                <div class="title">Lịch sử</div>
+
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Ngày</th>
+                            <th>Trận</th>
+			    <th>Xóa</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="historyTable"></tbody>
+                </table>
+
+            </div>
+
+        </div>
+
+        <!-- THỐNG KÊ -->
+        <div id="page-stat" class="hidden">
+
+            <div class="card">
+                <div class="title">Thống kê</div>
+
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Tên</th>
+                            <th>Số Trận</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="statTable"></tbody>
+                </table>
+
+                <button class="btn btn-red" onclick="clearAll()">
+                    Xóa toàn bộ dữ liệu
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- NAV -->
+    <div class="nav">
+        <button class="active" onclick="showPage('set',this)">Ghi set</button>
+        <button onclick="showPage('player',this)">Người chơi</button>
+        <button onclick="showPage('history',this)">Lịch sử</button>
+        <button onclick="showPage('stat',this)">Thống kê</button>
+    </div>
+
+    <script>
+
+let players = JSON.parse(localStorage.getItem("players") || "[]");
+let sets = JSON.parse(localStorage.getItem("sets") || "[]");
+
+function saveStorage(){
+    localStorage.setItem("players",JSON.stringify(players));
+    localStorage.setItem("sets",JSON.stringify(sets));
+}
+
+function showPage(page,btn){
+
+    document.querySelectorAll(".nav button")
+    .forEach(b=>b.classList.remove("active"));
+
+    btn.classList.add("active");
+
+    document.getElementById("page-set").classList.add("hidden");
+    document.getElementById("page-player").classList.add("hidden");
+    document.getElementById("page-history").classList.add("hidden");
+    document.getElementById("page-stat").classList.add("hidden");
+
+    document.getElementById("page-"+page)
+    .classList.remove("hidden");
+
+    renderAll();
+}
+
+function addPlayer(){
+
+    let name = document.getElementById("playerName").value.trim();
+
+    if(!name){
+        alert("Nhập tên");
+        return;
+    }
+
+    players.push(name);
+
+    saveStorage();
+
+    document.getElementById("playerName").value="";
+
+    renderAll();
+}
+
+function deletePlayer(index){
+
+    players.splice(index,1);
+
+    saveStorage();
+
+    renderAll();
+}
+
+function renderPlayers(){
+
+    players.sort((a,b)=>a.localeCompare(b));
+    let html="";
+
+    players.forEach((p,i)=>{
+
+        html+=`
+        <tr>
+            <td>${p}</td>
+            <td>
+                <button onclick="deletePlayer(${i})">
+                    Xóa
+                </button>
+            </td>
+        </tr>
+        `;
+    });
+
+    document.getElementById("playerTable").innerHTML=html;
+
+    let selects = ["a1","a2","b1","b2"];
+
+    selects.forEach(id=>{
+
+        let s=document.getElementById(id);
+
+        s.innerHTML=`<option value="">Không có</option>`;
+
+        players.forEach(p=>{
+
+            s.innerHTML+=`
+            <option value="${p}">
+                ${p}
+            </option>
+            `;
+        });
+
+    });
+
+}
+
+        function saveSet() {
+
+            let data = {
+
+                date: document.getElementById("date").value,
+
+                a1: document.getElementById("a1").value,
+                a2: document.getElementById("a2").value,
+
+                b1: document.getElementById("b1").value,
+                b2: document.getElementById("b2").value
+
+            };
+
+            sets.push(data);
+
+            saveStorage();
+
+            renderAll();
+
+            alert("Đã lưu trận");
+        }
+
+function renderHistory(){
+
+    let html="";
+
+    sets.forEach((s,index)=>{
+
+        html+=`
+        <tr>
+            <td>${s.date}</td>
+
+            <td>
+                ${s.a1} - ${s.a2}
+                <span style="color:red;font-weight:bold;">VS</span>
+                ${s.b1} - ${s.b2}
+            </td>
+
+            <td>
+                <button onclick="deleteSet(${index})">
+                    Xóa
+                </button>
+            </td>
+
+        </tr>
+        `;
+    });
+
+    document.getElementById("historyTable")
+    .innerHTML=html;
+}
+
+        function renderStats() {
+
+            let stats = {};
+
+            players.forEach(p => {
+
+                stats[p] = 0;
+
+            });
+
+            sets.forEach(s => {
+
+                let allPlayers = [
+                    s.a1,
+                    s.a2,
+                    s.b1,
+                    s.b2
+                ];
+
+                allPlayers.forEach(p => {
+
+                    if (p) {
+                        stats[p]++;
+                    }
+
+                });
+
+            });
+
+            let html = "";
+
+            for (let p in stats) {
+
+                html += `
+        <tr>
+            <td>${p}</td>
+            <td>${stats[p]}</td>
+        </tr>
+        `;
+            }
+
+            document.getElementById("statTable")
+                .innerHTML = html;
+        }
+
+function deleteSet(index){
+
+    if(confirm("Xóa trận này?")){
+
+        sets.splice(index,1);
+
+        saveStorage();
+
+        renderAll();
+    }
+}
+
+function clearAll(){
+
+    if(confirm("Xóa toàn bộ dữ liệu?")){
+
+        // Xóa riêng từng dữ liệu
+        localStorage.removeItem("players");
+        localStorage.removeItem("sets");
+
+        // Reset biến
+        players = [];
+        sets = [];
+
+        // Render lại giao diện
+        renderAll();
+
+        alert("Đã xóa toàn bộ dữ liệu");
+    }
+}
+
+function renderAll(){
+
+    renderPlayers();
+    renderHistory();
+    renderStats();
+}
+
+document.getElementById("date").valueAsDate =
+new Date();
+
+renderAll();
+
+    </script>
+
+</body>
+</html>
