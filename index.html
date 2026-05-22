@@ -151,11 +151,33 @@
             border-collapse: collapse;
         }
 
-            .table th, .table td {
-                padding: 14px;
-                border-bottom: 1px solid #24345d;
-                text-align: left;
-            }
+        .table th, .table td {
+            padding: 14px;
+            border-bottom: 1px solid #24345d;
+            text-align: left;
+        }
+
+        .match-box-vertical {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .team {
+            background: #1e3a5f;
+            padding: 10px 16px;
+            border-radius: 12px;
+            font-weight: 600;
+            min-width: 180px;
+            text-align: center;
+        }
+
+        .vs-text {
+            color: #ff4d4d;
+            font-size: 20px;
+            font-weight: 700;
+        }
 
         .btn-delete {
             background: #ff4d4d;
@@ -244,7 +266,7 @@
         <div id="page-set">
 
             <div class="card">
-                <div class="title">Ghi set mới</div>
+                <div class="title">Ghi Set Mới</div>
 
                 <div class="full-width">
                     <label>Ngày</label>
@@ -285,10 +307,10 @@
     <div id="page-player" class="hidden">
 
         <div class="card">
-            <div class="title">Người chơi</div>
+            <div class="title">Người Chơi</div>
 
-            <label>Tên người chơi</label>
-            <input type="text" id="playerName" placeholder="Tên người chơi">
+            <label>Tên Người Chơi</label>
+            <input type="text" id="playerName" placeholder="Tên Người Chơi">
 
             <button class="btn btn-green" onclick="addPlayer()">
                 Thêm
@@ -315,21 +337,18 @@
     <div id="page-history" class="hidden">
 
         <div class="card">
-            <div class="title">Lịch sử</div>
+            <div class="title">Lịch Sử</div>
 
             <table class="table">
                 <thead>
                     <tr>
-                        <th>Ngày</th>
-                        <th>Trận</th>
-                        <th>Xóa</th>
                     </tr>
                 </thead>
 
                 <tbody id="historyTable"></tbody>
             </table>
             <button class="btn btn-red" onclick="clearHistory()">
-                Xóa toàn bộ lịch sử
+                Xóa Toàn Bộ Lịch Sử
             </button>
         </div>
 
@@ -339,7 +358,7 @@
     <div id="page-stat" class="hidden">
 
         <div class="card">
-            <div class="title">Thống kê</div>
+            <div class="title">Thống Kê</div>
 
             <table class="table">
                 <thead>
@@ -352,7 +371,7 @@
                 <tbody id="statTable"></tbody>
             </table>
             <button class="btn btn-red" onclick="clearAll()">
-                Xóa toàn bộ dữ liệu
+                Xóa Toàn Bộ Dữ Liệu
             </button>
 
         </div>
@@ -363,10 +382,10 @@
 
     <!-- NAV -->
     <div class="nav">
-        <button class="active" onclick="showPage('set',this)">Ghi set</button>
-        <button onclick="showPage('player',this)">Người chơi</button>
-        <button onclick="showPage('history',this)">Lịch sử</button>
-        <button onclick="showPage('stat',this)">Thống kê</button>
+        <button class="active" onclick="showPage('set',this)">Ghi Set</button>
+        <button onclick="showPage('player',this)">Người Chơi</button>
+        <button onclick="showPage('history',this)">Lịch Sử</button>
+        <button onclick="showPage('stat',this)">Thống Kê</button>
     </div>
 
     <script>
@@ -533,31 +552,50 @@
             sets.forEach((s, index) => {
 
                 html += `
-            <tr>
-                <td>${s.date}</td>
 
-                <td>
-                    ${s.a1} - ${s.a2}
-                    <span style="color:red;font-weight:bold;">VS</span>
-                    ${s.b1} - ${s.b2}
-                </td>
+        <tr>
 
-                <td>
+            <td>
+                ${s.date}
+            </td>
 
-                    <button class="btn-edit"
-                        onclick="editSet(${index})">
-                        ✏️ Sửa
-                    </button>
+            <td>
 
-                    <button class="btn-delete"
-                        onclick="deleteSet(${index})">
-                        🗑 Xóa
-                    </button>
+                <div class="match-box-vertical">
 
-                </td>
+                    <div class="team">
+                        ${s.a1} - ${s.a2}
+                    </div>
 
-            </tr>
-            `;
+                    <div class="vs-text">
+                        VS
+                    </div>
+
+                    <div class="team">
+                        ${s.b1} - ${s.b2}
+                    </div>
+
+                </div>
+
+            </td>
+
+            <td>
+
+                <button class="btn-edit"
+                    onclick="editSet(${index})">
+                    ✏️ Sửa
+                </button>
+
+                <button class="btn-delete"
+                    onclick="deleteSet(${index})">
+                    🗑 Xóa
+                </button>
+
+            </td>
+
+        </tr>
+
+        `;
             });
 
             document.getElementById("historyTable")
